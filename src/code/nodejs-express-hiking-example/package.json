@@ -1,0 +1,23 @@
+{
+
+  "name": "application-name",
+  "version": "0.0.1",
+  "engines": { "node" : "14.16.0" },
+  "private": true,
+  "scripts": {
+    "start": "node app"
+  },
+  "dependencies": {
+    "express": "3.1.0",
+    "jade": "*",
+    "mysql2": "2.3.3",
+    "async": "*",
+    "node-uuid": "*",
+    "@aws-sdk/client-rds": "3.42.0",
+    "@aws-sdk/signature-v4": "3.40.0",
+    "@aws-sdk/hash-node": "3.40.0",
+    "@aws-sdk/protocol-http": "3.40.0",
+    "@aws-sdk/util-format-url": "3.40.0",
+    "@aws-sdk/credential-provider-node": "3.41.0"
+  } 
+}

@@ -1,0 +1,60 @@
+{
+  "app": "npx ts-node --prefer-ts-exts bin/elastic_beanstalk_cdk_project.ts",
+  "watch": {
+    "include": [
+      "**"
+    ],
+    "exclude": [
+      "README.md",
+      "cdk*.json",
+      "**/*.d.ts",
+      "**/*.js",
+      "tsconfig.json",
+      "package*.json",
+      "yarn.lock",
+      "node_modules",
+      "test"
+    ]
+  },
+  "context": {
+    "configuration": {
+      "instanceType": "t2.micro",
+      "applicationName": "MySimpleNodejsExample",
+      "vpcName": "MyVPC",
+      "vpcCidr": "10.0.0.0/16",
+      "loadbalancerInboundCIDR": "0.0.0.0/0",
+      "loadbalancerOutboundCIDR": "0.0.0.0/0",
+      "webserverOutboundCIDR": "0.0.0.0/0",
+      "zipFileName": "nodejs.zip",
+      "solutionStackName": "64bit Amazon Linux 2 v5.4.10 running Node.js 14",
+      "managedActionsEnabled": "true",
+      "updateLevel": "patch",
+      "preferredUpdateStartTime": "Sun:01:00",
+      "streamLogs": "true",
+      "deleteLogsOnTerminate": "false",
+      "logRetentionDays": "7",
+      "loadBalancerType": "application",
+      "lbHTTPSEnabled": true,
+      "lbHTTPSCertificateArn": "",
+      "lbSSLPolicy": null,
+      "databaseSettings": {
+        "dbName": "databasename",
+        "dbAdminUsername": "admin",
+        "dbWebUsername": "dbwebuser",
+        "dbStorageGB": 100,
+        "dbMaxStorageGiB": 200,
+        "dbMultiAZ": true,
+        "dbBackupRetentionDays": 7,
+        "dbDeleteAutomatedBackups": true,
+        "dbPreferredBackupWindow": "01:00-01:30",
+        "dbCloudwatchLogsExports": ["audit","error","general","slowquery"],
+        "dbIamAuthentication": true,
+        "dbInstanceType": "t2.small",
+        "dbRetentionPolicy": "destroy"
+      }
+    },
+    "@aws-cdk/core:stackRelativeExports": true,
+    "@aws-cdk/aws-rds:lowercaseDbIdentifier": true,
+    "@aws-cdk/aws-lambda:recognizeVersionProps": true
+  }
+}
