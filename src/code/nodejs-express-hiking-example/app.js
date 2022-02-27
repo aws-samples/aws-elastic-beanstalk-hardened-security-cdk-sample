@@ -10,6 +10,9 @@ var express = require('express')
   , path = require('path')
   , mysql = require('mysql2')
   , async = require('async')
+  , morgan = require('morgan')
+  , bodyParser = require('body-parser')
+  , methodOverride = require('method-override')
   , { HttpRequest } = require('@aws-sdk/protocol-http')
   , { SignatureV4 } = require('@aws-sdk/signature-v4')
   , { defaultProvider } = require("@aws-sdk/credential-provider-node")
@@ -18,16 +21,13 @@ var express = require('express')
 
 var app = express();
 
-app.configure(function(){
-  app.set('port', process.env.PORT || 3000);
-  app.set('views', __dirname + '/views');
-  app.set('view engine', 'jade');
-  app.use(express.favicon());
-  app.use(express.logger('dev'));
-  app.use(express.bodyParser());
-  app.use(express.methodOverride());
-  app.use(app.router);
-});
+app.set('port', process.env.PORT || 3000);
+app.set('views', __dirname + '/views');
+app.set('view engine', 'pug');
+app.use(morgan('dev'));
+app.use(methodOverride());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 const { RDS_HOSTNAME, RDS_PORT, RDS_USERNAME, REGION, RDS_DATABASE } = process.env
 
