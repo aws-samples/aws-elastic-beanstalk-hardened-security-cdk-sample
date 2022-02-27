@@ -59,7 +59,7 @@ export class ElasticBeanstalkCdkStack extends Stack {
     } = props
 
     if (lbHTTPSEnabled && lbHTTPSCertificateArn === "") {
-      throw new Error("Please provide a certificate ARN, or disable HTTPS for testing purposes");
+      throw new Error("Please provide a certificate ARN in cdk.json, or disable HTTPS for testing purposes");
     }
 
     console.log("Configuration settings: ", props)
