@@ -342,15 +342,14 @@ export class ElasticBeanstalkCdkStack extends Stack {
     if (lbHTTPSEnabled === true) {
       const sslPolicy = lbSSLPolicy || "ELBSecurityPolicy-FS-1-2-Res-2020-10"
       const httpsSettings = [
-        ['aws:elbv2:listener:default', 'ListenerEnabled', "false"],                                                 
-        ['aws:elbv2:listener:443', 'ListenerEnabled', "true"],                              // Attach Security Group to Load Balancer                    
-        ['aws:elbv2:listener:443', 'SSLCertificateArns', lbHTTPSCertificateArn],                              // Attach Security Group to Load Balancer                    
-        ['aws:elbv2:listener:443', 'SSLPolicy', sslPolicy],                              // Attach Security Group to Load Balancer     
-        ['aws:elbv2:listener:443', 'Protocol', "HTTPS"],                              // Attach Security Group to Load Balancer     
+        ['aws:elbv2:listener:default', 'ListenerEnabled', "false"],                         // Disable the default HTTP listener
+        ['aws:elbv2:listener:443', 'ListenerEnabled', "true"],                              // Create a new HTTPS listener on port 443
+        ['aws:elbv2:listener:443', 'SSLCertificateArns', lbHTTPSCertificateArn],            // Attach the certificate for the custom domain
+        ['aws:elbv2:listener:443', 'SSLPolicy', sslPolicy],                                 // Specifies the TLS policy
+        ['aws:elbv2:listener:443', 'Protocol', "HTTPS"],                                    // Sets the protocol for the listener to HTTPS
       ]
       ebSettings = ebSettings.concat(httpsSettings)
     }
-    console.log(ebSettings)
     /* Map settings created above, to the format required for the Elastic Beanstalk OptionSettings 
       [
         { 
