@@ -117,6 +117,8 @@ export class ElasticBeanstalkCdkStack extends Stack {
       ]
     })
 
+    vpc.node.addDependency(encryptedBucket)
+
     // Upload the example ZIP file to the deployment bucket 
     const appDeploymentZip = new s3Deploy.BucketDeployment(this, "DeployZippedApplication", {
       sources: [s3Deploy.Source.asset(`${__dirname}/../src/deployment_zip`)],
@@ -143,26 +145,6 @@ export class ElasticBeanstalkCdkStack extends Stack {
       instanceProfileName: ec2ProfileName,
       roles: [webtierRole.roleName]
     });
-
-    /*
-      If you use the default ServiceRole (i.e. you don't define a custom one), and then want to enable Managed Updates, you'll get the following error:
-      You can't enable managed platform updates when your environment uses the service-linked role 'AWSServiceRoleForElasticBeanstalk'. 
-      Select a service role that has the 'AWSElasticBeanstalkManagedUpdatesCustomerRolePolicy' managed policy.
-      
-      For this reason, I'm creating a custom ServiceRole, which has the same permissions as the default Service role created by Elastic Beanstalk
-     */
-    const policyJson = require('./service_role_policy.json')
-    const serviceRolePolicy = new iam.Policy(this, 'serviceRolePolicy', {
-      policyName: 'BeanstalkServiceRolePolicy',
-      document: iam.PolicyDocument.fromJson(policyJson)
-    })
-
-    const ebServiceRole = new iam.Role(this, 'ebServiceRole', {
-      roleName: "aws-elasticbeanstalk-service-role",
-      assumedBy: new iam.ServicePrincipal('elasticbeanstalk.amazonaws.com'),
-    })
-    ebServiceRole.attachInlinePolicy(serviceRolePolicy)
-
 
     // Create Security Group for load balancer
     const lbSecurityGroup = new ec2.SecurityGroup(this, 'LbSecurityGroup', {
@@ -231,7 +213,6 @@ export class ElasticBeanstalkCdkStack extends Stack {
       vpc.applyRemovalPolicy(retentionPolicy)
       vpc.node.findAll().forEach(node => node instanceof CfnResource && node.applyRemovalPolicy(retentionPolicy))
     }
-
 
     // Allow inbound traffic on port 3306 from the web instances
     dbSecurityGroup.connections.allowFrom(
@@ -316,7 +297,6 @@ export class ElasticBeanstalkCdkStack extends Stack {
     const serviceLinkedRole = 'AWSServiceRoleForElasticBeanstalkManagedUpdates'
     var ebSettings = [
       ['aws:elasticbeanstalk:environment', 'LoadBalancerType', loadBalancerType],                                 // Set the load balancer type (e.g. 'application' for ALB)
-      ['aws:elasticbeanstalk:environment', 'ServiceRole', ebServiceRole.roleArn],                                 // Set the Service Role
       ['aws:autoscaling:launchconfiguration', 'InstanceType', instanceType],                                      // Set instance type for web tier
       ['aws:autoscaling:launchconfiguration', 'IamInstanceProfile', ec2InstanceProfile.attrArn],                  // Set IAM Instance Profile for web tier
       ['aws:autoscaling:launchconfiguration', 'SecurityGroups', webSecurityGroup.securityGroupId],                // Set Security Group for web tier

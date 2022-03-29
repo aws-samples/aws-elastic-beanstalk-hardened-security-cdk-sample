@@ -2,7 +2,7 @@
  * Module dependencies.
  */
 
-var express = require('express')
+const express = require('express')
   , routes = require('./routes')
   , user = require('./routes/user')
   , hike = require('./routes/hike')
@@ -19,7 +19,7 @@ var express = require('express')
   , { Hash } = require('@aws-sdk/hash-node')
   , { formatUrl } = require('@aws-sdk/util-format-url');
 
-var app = express();
+const app = express();
 
 app.set('port', process.env.PORT || 3000);
 app.set('views', __dirname + '/views');
@@ -31,7 +31,7 @@ app.use(bodyParser.json());
 
 const { RDS_HOSTNAME, RDS_PORT, RDS_USERNAME, REGION, RDS_DATABASE } = process.env
 
-var getIamAuthToken = async() => {
+const getIamAuthToken = async() => {
   // I don't want to use the older v2 SDK (which had the signer for RDS) 
   // The code below is inspired by comments from: https://github.com/aws/aws-sdk-js-v3/issues/1823
   const signer = new SignatureV4({
