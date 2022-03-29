@@ -26,7 +26,7 @@
       "loadbalancerOutboundCIDR": "0.0.0.0/0",
       "webserverOutboundCIDR": "0.0.0.0/0",
       "zipFileName": "nodejs.zip",
-      "solutionStackName": "64bit Amazon Linux 2 v5.4.10 running Node.js 14",
+      "solutionStackName": "64bit Amazon Linux 2 v5.5.0 running Node.js 14",
       "managedActionsEnabled": "true",
       "updateLevel": "patch",
       "preferredUpdateStartTime": "Sun:01:00",

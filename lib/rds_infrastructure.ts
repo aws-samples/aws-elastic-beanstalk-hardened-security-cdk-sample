@@ -108,7 +108,6 @@ export class CdkRDSResource extends Construct {
       iamAuthentication: dbIamAuthentication // Enables IAM authentication for the database
     }
 
-
     // create the Database instance, assign it to the public attribute so that the stack can read it from the construct
     this.rdsInstance = new rds.DatabaseInstance(this, `${applicationName}-instance`, rdsConfig);
     this.rdsCredentials = dbCredentials
