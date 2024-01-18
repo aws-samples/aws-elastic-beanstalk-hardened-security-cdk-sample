@@ -16,7 +16,7 @@
     "mysql2": "^2.3.3",
     "async": "*",
     "node-uuid": "*",
-    "@aws-sdk/client-rds": "^3.350.0",
+    "@aws-sdk/client-rds": "^3.490.0",
     "@aws-sdk/signature-v4": "^3.53.0",
     "@aws-sdk/hash-node": "^3.53.0",
     "@aws-sdk/protocol-http": "^3.53.0",
